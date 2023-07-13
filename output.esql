@@ -1,0 +1,33 @@
+DECLARE ns NAMESPACE 'http://webservice.fiusb.ci.infosys.com';
+DECLARE xmlns NAMESPACE 'http://www.finacle.com/fixml';
+DECLARE xsl NAMESPACE 'http://www.w3.org/2001/XMLSchema-instance';
+DECLARE schemalocation NAMESPACE 'http://www.finacle.com/fixml executeFinacleScript.xsd';
+DECLARE CURRENT_DATETIME CHARACTER;
+SET CURRENT_DATETIME=CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd')||'T'||CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'HH:mm:ss.SSS');
+--Assign Namespace
+SET OutputRoot.XMLNSC.xmlns:FIXML.(XMLNSC.NamespaceDecl)"xmlns"='http://www.finacle.com/fixml';
+SET OutputRoot.XMLNSC.xmlns:FIXML.(XMLNSC.NamespaceDecl)"xmlns:xsi"='http://www.w3.org/2001/XMLSchema-instance';
+SET OutputRoot.XMLNSC.xmlns:FIXML.(XMLNSC.NamespaceDecl)"xsi:schemaLocation"='http://www.finacle.com/fixml executeFinacleScript.xsd';
+--Assign Request Header
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:MessageKey.xmlns:RequestUUID=InputRoot.JSON.Data.ReqID;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:MessageKey.xmlns:ServiceRequestId='executeFinacleScript';
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:MessageKey.xmlns:ServiceRequestVersion='10.2';
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:MessageKey.xmlns:ChannelId='COR';
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:MessageKey.xmlns:LanguageId.(XML.Content)=NULL;
+--Assign Request MsgInfo
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:RequestMessageInfo.xmlns:BankId.(XML.Content)=NULL;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:RequestMessageInfo.xmlns:TimeZone.(XML.Content)=NULL;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:RequestMessageInfo.xmlns:EntityId.(XML.Content)=NULL;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:RequestMessageInfo.xmlns:EntityType.(XML.Content)=NULL;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:RequestMessageInfo.xmlns:ArmCorrelationId.(XML.Content)=NULL;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Header.xmlns:RequestHeader.xmlns:RequestMessageInfo.xmlns:MessageDateTime=CURRENT_DATETIME;
+--Assign Body
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Body.xmlns:executeFinacleScriptRequest.xmlns:ExecuteFinacleScriptInputVO.xmlns:requestId='SMB_FI_SMS_Status_Maintenance.scr';
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Body.xmlns:executeFinacleScriptRequest.xmlns:executeFinacleScript_CustomData.xmlns:custId=InputRoot.JSON.Data.custId;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Body.xmlns:executeFinacleScriptRequest.xmlns:executeFinacleScript_CustomData.xmlns:mobileNo=InputRoot.JSON.Data.mobileNo;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Body.xmlns:executeFinacleScriptRequest.xmlns:executeFinacleScript_CustomData.xmlns:custStatus=InputRoot.JSON.Data.custStatus;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Body.xmlns:executeFinacleScriptRequest.xmlns:executeFinacleScript_CustomData.xmlns:chgAcct=InputRoot.JSON.Data.chgAcct;
+SET OutputRoot.XMLNSC.xmlns:FIXML.xmlns:Body.xmlns:executeFinacleScriptRequest.xmlns:executeFinacleScript_CustomData.xmlns:funcCode=InputRoot.JSON.Data.funcCode;
+DECLARE wholeMsgBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC,InputProperties.Encoding, InputProperties.CodedCharSetId);
+DECLARE wholeMsgChar CHARACTER CAST(wholeMsgBlob AS CHARACTER CCSID InputProperties.CodedCharSetId);
+SET OutputRoot.SOAP.Body.ns:executeService.(XMLNSC.CDataField)arg_0_0=wholeMsgChar; 
